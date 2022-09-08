@@ -21,6 +21,10 @@ In "chat = ''" insert chat from key_gen
 
 `start client.py`
 
+### !
+__This must be repeated for all users.__
+__All users must have the same key, chat and file.__
+
 ### Start server
 
 `start server.py`

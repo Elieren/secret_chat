@@ -4,7 +4,6 @@ from cryptography.fernet import Fernet
 import platform
 import os
 import win10toast
-import keyboard
 
 # Choosing Nickname
 nickname = input("Choose your nickname: ")

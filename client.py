@@ -665,7 +665,6 @@ def receive(pushed):
     while True:
         try:
             # Receive Message From Server
-            # If 'NICK' Send Nickname
             message = client.recv(1024)
             message_pd = message
             message_v3 = decrypted_V3(message)
@@ -690,7 +689,7 @@ def receive(pushed):
                 else:
                     pass
         except:
-            # Close Connection When Error
+            # print "Alarm" When Error
             print('🔴 ALARM 🔴')
 
 # Sending Messages To Server

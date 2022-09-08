@@ -29,3 +29,5 @@ __All users must have the same key, chat and file.__
 ### Start server
 
 `start server.py`
+
+__Default port 9090__

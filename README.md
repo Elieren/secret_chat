@@ -17,6 +17,7 @@ This is the key and chat
 In "ip_server = ''" insert server ip
 
 In "key = ''" insert key from key_gen
+
 In "chat = ''" insert chat from key_gen
 
 `start client.py`

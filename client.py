@@ -276,10 +276,10 @@ def receive(pushed):
         try:
             # Receive Message From Server
             message = client.recv(1024)
-            message_v3 = decrypted_V3(message)
-            message_v3 = message_v3.decode('utf-8')
-            message_v2 = decrypted_v2(message_v3)
             try:
+                message_v3 = decrypted_V3(message)
+                message_v3 = message_v3.decode('utf-8')
+                message_v2 = decrypted_v2(message_v3)
                 message_v3 = decrypted_V3(message)
                 message_v3 = message_v3.decode('utf-8')
                 message_v2 = decrypted_v2(message_v3)

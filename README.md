@@ -3,7 +3,7 @@ This is a chat with three levels of encryption.
 
 ### Сreate encryption keys
 
-`./key_gen.py`
+`python3 key_gen.py`
 
 The __key:__ and __chat:__ will be displayed
 
@@ -20,7 +20,7 @@ In "  key = ' '  " insert key from key_gen
 
 In "  chat = ' '  " insert chat from key_gen
 
-`start client.py`
+`python3 client.py`
 
 ### !
 __This must be repeated for all users.__
@@ -28,6 +28,6 @@ __All users must have the same key, chat and file.__
 
 ### Start server
 
-`start server.py`
+`python3 server.py`
 
 __Default port 9090__

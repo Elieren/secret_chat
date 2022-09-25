@@ -5,7 +5,7 @@ This is a chat with three levels of encryption.
 
 `./key_gen.py`
 
-The key and chat will be displayed
+The __key:__ and __chat:__ will be displayed
 
 A __key.py__ file will also be created
 

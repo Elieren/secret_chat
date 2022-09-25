@@ -14,11 +14,11 @@ This is the key and chat
 
 `nano client.py`
 
-In "  ip_server = ''  " insert server ip
+In "  ip_server = ' '  " insert server ip
 
-In "  key = ''  " insert key from key_gen
+In "  key = ' '  " insert key from key_gen
 
-In "  chat = ''  " insert chat from key_gen
+In "  chat = ' '  " insert chat from key_gen
 
 `start client.py`
 

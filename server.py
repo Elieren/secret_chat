@@ -55,7 +55,7 @@ def receive():
         # Print And Broadcast Nickname
         print("Nickname is {}".format(nickname))
         broadcast("{}".format(nickname).encode('utf-8'))
-        #broadcast("^ Connect ^".encode('utf-8'))
+        broadcast("^ Connect ^".encode('utf-8'))
 
         # Start Handling Thread For Client
         thread = threading.Thread(target=handle, args=(client,))

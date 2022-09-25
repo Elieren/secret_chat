@@ -6,20 +6,20 @@ chat = Fernet.generate_key()
 
 key = Fernet.generate_key()
 
-print('Key: ',key)
+print('Key: ', key.decode('utf-8'))
 
 a = 1
 g = list()
 length = 5
 
-while a < 102:
+while a < 101:
 	    letters_and_digits = string.ascii_letters + string.digits
 	    rand_string = ''.join(random.sample(letters_and_digits, length))
 	    g.append(rand_string)
 	    a += 1
 
 
-print('\nChat: ',chat)
+print('\nChat: ', chat.decode('utf-8'))
 
 g = ' '.join(g)
 

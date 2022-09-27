@@ -6,7 +6,13 @@ This is a chat with three levels of encryption.
 ./key_gen.py
 ```
 
+<<<<<<< HEAD
 The __key:__ will be displayed
+=======
+`python3 key_gen.py`
+
+The __key:__ and __chat_key:__ will be displayed
+>>>>>>> 88eb7a6a930c933cb3fff31a09b1cf22dc6f48f7
 
 A __key.py__ file will also be created
 

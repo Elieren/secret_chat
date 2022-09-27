@@ -5,14 +5,9 @@ This is a chat with three levels of encryption.
 ```
 ./key_gen.py
 ```
+The key will be displayed
 
-<<<<<<< HEAD
 The __key:__ will be displayed
-=======
-`python3 key_gen.py`
-
-The __key:__ and __chat_key:__ will be displayed
->>>>>>> 88eb7a6a930c933cb3fff31a09b1cf22dc6f48f7
 
 A __key.py__ file will also be created
 
@@ -28,9 +23,10 @@ __This must be repeated for all users.__
 __All users must have the same key and file.__
 
 ### Start server
-
 ```
 start server.py
 ```
+
+`python3 server.py`
 
 __Default port 9090__

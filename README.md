@@ -19,6 +19,7 @@ python3 client.py
 ```
 ## __!__
 __This must be repeated for all users.__
+
 __All users must have the same key and file.__
 
 ### Start server

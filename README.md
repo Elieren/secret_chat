@@ -5,7 +5,6 @@ This is a chat with three levels of encryption.
 ```
 python3 key_gen.py
 ```
-The key will be displayed
 
 The __key:__ will be displayed
 

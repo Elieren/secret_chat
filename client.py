@@ -15,7 +15,7 @@ client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 client.connect((ip_server, 9090))
 
 key = str(input('key: '))
-chat = str(input('chat_key: '))
+chat = key
 
 plat = platform.processor()
 
@@ -278,34 +278,36 @@ def receive(pushed):
             message = client.recv(1024)
             try:
                 message_v3 = decrypted_V3(message)
-                message_v3 = message_v3.decode('utf-8')
-                message_v2 = decrypted_v2(message_v3)
-                message_v3 = decrypted_V3(message)
-                message_v3 = message_v3.decode('utf-8')
-                message_v2 = decrypted_v2(message_v3)
                 try:
-                    message = decrypted(message_v2, baza)
-                    nick = message.split(":")
-                    nicknameup = nickname.upper()
-                    if nick[0] == nicknameup:
-                        pass
-                    else:
-                        print(message)
+                    message_v3 = message_v3.decode('utf-8')
+                    message_v2 = decrypted_v2(message_v3)
+                    message_v3 = decrypted_V3(message)
+                    message_v3 = message_v3.decode('utf-8')
+                    message_v2 = decrypted_v2(message_v3)
+                    try:
+                        message = decrypted(message_v2, baza)
+                        nick = message.split(":")
+                        nicknameup = nickname.upper()
+                        if nick[0] == nicknameup:
+                            pass
+                        else:
+                            print(message)
+                            if pushed == 1:
+                                push(message)
+                            else:
+                                pass
+                    except:
+                        print(message_v2)
                         if pushed == 1:
                             push(message)
                         else:
                             pass
                 except:
-                    print(message_v2)
-                    if pushed == 1:
-                        push(message)
-                    else:
-                        pass
+                    print('🔴 ALARM 🔴')
             except:
-                print('🔴 ALARM 🔴')
+                print(message)
         except:
-            # print "Alarm" When Error
-            print(message)
+            pass
 
 # Sending Messages To Server
 def write():

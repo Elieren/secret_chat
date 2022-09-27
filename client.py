@@ -8,14 +8,14 @@ import win10toast
 # Choosing Nickname
 nickname = input("Choose your nickname: ")
 
-ip_server = ''
+ip_server = str(input('ip_server: '))
 
 # Connecting To Server
 client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 client.connect((ip_server, 9090))
 
-key = ''
-chat = ''
+key = str(input('key: '))
+chat = str(input('chat_key: '))
 
 plat = platform.processor()
 

@@ -19,7 +19,7 @@ while a < 101:
 	    a += 1
 
 
-print('\nChat: ', chat.decode('utf-8'))
+print('\nChat_key: ', chat.decode('utf-8'))
 
 g = ' '.join(g)
 

@@ -16,6 +16,7 @@ client.connect((ip_server, 9090))
 
 key = str(input('key: '))
 shift = int(input('transitions: '))
+print(r"Type 'f' to send a file")
 chat = key
 
 plat = platform.processor()
@@ -249,7 +250,7 @@ def decrypted_V3(message):
 
 
 #======================================================#
-message = '{}'.format(nickname)
+message = '{}::0'.format(nickname)
 cod = encrypted(message, baza)
 cod_v2 = encrypted_V2(cod)
 cod_v3 = encrypted_V3(cod_v2)
@@ -274,16 +275,27 @@ def receive(pushed):
                     try:
                         message = decrypted(message_v2, baza)
                         nick = message.split(":")
+                        message = ''.join(nick[0]) + ': ' + ''.join(nick[1])
                         nicknameup = nickname.upper()
-                        if nick[0] == nicknameup:
-                            test = b''
-                        else:
-                            print(message)
-                            test = b''
-                            if pushed == 1:
-                                push(message)
+                        if nick[2] == '0':
+                            if nick[0] == nicknameup:
+                                test = b''
                             else:
-                                pass
+                                print(message)
+                                test = b''
+                                if pushed == 1:
+                                    push(message)
+                                else:
+                                    pass
+                        else:
+                            if nick[0] == nicknameup:
+                                test = b''
+                            else:
+                                file_b = nick[1]
+                                ras = nick[2].lower()
+
+                                file = open(f'file{ras}', 'wb')
+                                file.write(file_b)
                     except:
                         print(message_v2)
                         test = b''
@@ -309,7 +321,14 @@ def receive(pushed):
 def write():
     while True:
         messager = input(': ')
-        message = '{}: {}'.format(nickname, messager)
+        if messager == 'f':
+            f = str(input('directory: '))
+            filename, file_extension = os.path.splitext(f)
+            file = open(f, 'rb')
+            file = file.read(2048)
+            message = '{}: {}:{}'.format(nickname, file, file_extension)
+        else:
+            message = '{}: {}:0'.format(nickname, messager)
         cod = encrypted(message, baza)
         cod_v2 = encrypted_V2(cod)
         cod_v3 = encrypted_V3(cod_v2)

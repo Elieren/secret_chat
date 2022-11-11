@@ -2,7 +2,7 @@ import socket
 import threading
 
 # Connection Data
-host = '192.168.1.58'
+host = 'localhost'
 port = 9090
 
 # Starting Server

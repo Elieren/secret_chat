@@ -17,10 +17,15 @@ Put the key file in the same directory as the client file.
 ```
 python3 client.py
 ```
+
+In the 'transitions' field, enter any number from 1-10.
+
 ## __!__
 __This must be repeated for all users.__
 
 __All users must have the same key and file.__
+
+__The "transitions" field must have the same number for all clients in order for the program to work correctly.__
 
 ### Start server
 ```

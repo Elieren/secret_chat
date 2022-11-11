@@ -15,6 +15,7 @@ client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 client.connect((ip_server, 9090))
 
 key = str(input('key: '))
+shift = int(input('transitions: '))
 chat = key
 
 plat = platform.processor()
@@ -29,6 +30,11 @@ else:
     elif lord == 'N':
         pushed = 0
 
+print('\n')
+
+#------------------------------------------------------------#
+
+
 def fornet(key):
     from key import KEY
     baza = KEY
@@ -36,6 +42,7 @@ def fornet(key):
     em = em.decode('utf-8')
     baza = em.split(" ")
     return baza
+
 
 def push(message):
     message = message
@@ -56,25 +63,30 @@ def push(message):
         return
     else:
         return
+
+
+#------------------------------------------------------------#
+rus = ["А", "Б", "В", "Г", "Д", "Е", "Ё", "Ж", "З",
+       "И", "Й", "К", "Л", "М", "Н", "О", "П", "Р", "С", "Т", "У", "Ф", "Х", "Ц", "Ч", "Ш", "Щ", "Ъ", "Ы", "Ь", "Э", "Ю", "Я"]
+
+eng = ["A", "B", "C", "D", "E", "F", "G",
+       "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
+
+numbers = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"]
+
+probel = [" "]
+
+znaki = [",", ".", "!", "?", '"', "@", "№",
+         "#", "$", ";", "%", "^", ":", "&", "*", "(", ")", "-", "_", "+", "=", "{", "}", "[", "]", "'", ">", "<", "/", "\\"]
+
+over = rus + eng + numbers + probel + znaki
 #------------------------------------------------------------#
 #CRYPT_V1
 baza = fornet(key)
 
+
 def encrypted(massager, baza):
-    rus = ["А", "Б", "В", "Г", "Д", "Е", "Ё", "Ж", "З",
-           "И", "Й", "К", "Л", "М", "Н", "О", "П", "Р", "С", "Т", "У", "Ф", "Х", "Ц", "Ч", "Ш", "Щ", "Ъ", "Ы", "Ь", "Э", "Ю", "Я"]
-
-    eng = ["A", "B", "C", "D", "E", "F", "G",
-           "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
-
-    numbers = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"]
-
-    probel = [" "]
-
-    znaki = [",", ".", "!", "?", '"', "@", "№",
-             "#", "$", ";", "%", "^", ":", "&", "*", "(", ")", "-", "_", "+", "=", "{", "}", "[", "]", "'", ">", "<", "/", "\\"]
-
-    over = rus + eng + numbers + probel + znaki
+    global over
 
     text = massager
 
@@ -86,32 +98,8 @@ def encrypted(massager, baza):
 
     for x in text2:
         nom = 0
-        for r in rus:
+        for r in over:
             if x in r:
-                cod = cod + f"{baza[nom]}"
-            else:
-                pass
-            nom += 1
-        for e in eng:
-            if x in e:
-                cod = cod + f"{baza[nom]}"
-            else:
-                pass
-            nom += 1
-        for n in numbers:
-            if x in n:
-                cod = cod + f"{baza[nom]}"
-            else:
-                pass
-            nom += 1
-        for p in probel:
-            if x in p:
-                cod = cod + f"{baza[nom]}"
-            else:
-                pass
-            nom += 1
-        for z in znaki:
-            if x in z:
                 cod = cod + f"{baza[nom]}"
             else:
                 pass
@@ -123,7 +111,7 @@ def encrypted(massager, baza):
 
     for x in low:
         nom = 59
-        for n in numbers:
+        for n in over[59:69]:
             if x in n:
                 cod = cod + f"{baza[nom]}"
             else:
@@ -133,22 +121,10 @@ def encrypted(massager, baza):
     text2.clear()
     return cod
 
+
 def decrypted(message, baza):
 
-    rus = ["А", "Б", "В", "Г", "Д", "Е", "Ё", "Ж", "З",
-           "И", "Й", "К", "Л", "М", "Н", "О", "П", "Р", "С", "Т", "У", "Ф", "Х", "Ц", "Ч", "Ш", "Щ", "Ъ", "Ы", "Ь", "Э", "Ю", "Я"]
-
-    eng = ["A", "B", "C", "D", "E", "F", "G",
-           "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
-
-    numbers = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"]
-
-    probel = [" "]
-
-    znaki = [",", ".", "!", "?", '"', "@", "№",
-             "#", "$", ";", "%", "^", ":", "&", "*", "(", ")", "-", "_", "+", "=", "{", "}", "[", "]", "'", ">", "<", "/", "\\"]
-
-    over = rus + eng + numbers + probel + znaki
+    global over
 
     text2 = list()
     ty = ""
@@ -173,7 +149,7 @@ def decrypted(message, baza):
         nom = 0
         for b in baza:
             if b in x:
-                   cop = cop + f"{over[nom]}"
+                cop = cop + f"{over[nom]}"
             else:
                 pass
             nom += 1
@@ -187,7 +163,7 @@ def decrypted(message, baza):
             nom = 0
             for b in baza:
                 if b in x:
-                        cod = cod + f"{over[nom]}"
+                    cod = cod + f"{over[nom]}"
                 else:
                     pass
                 nom += 1
@@ -197,10 +173,13 @@ def decrypted(message, baza):
     return message
 #-----------------------------------------------------#
 #CRYPT_V2
+
+
 def encrypted_V2(cod):
     a = []
     b = []
     d = 0
+    global shift
     for x in cod:
         a.append(x)
     l = len(a)
@@ -214,16 +193,20 @@ def encrypted_V2(cod):
             d += 1
         except:
             continue
+    b = b[shift:] + b[:shift]
     b = ("".join(b))
     return b
+
 
 def decrypted_v2(message_v3):
     e = 0
     g = 0
     b = []
     c = []
+    global shift
     for x in message_v3:
         b.append(x)
+    b = b[-shift:] + b[:-shift]
     l = len(b)
     while e < l:
         try:
@@ -251,6 +234,8 @@ def decrypted_v2(message_v3):
 
 #---------------------------------------------------#
 #CRYPT_V3
+
+
 def encrypted_V3(cod_v2):
     message = cod_v2.encode('utf-8')
     cod_v3 = Fernet(chat).encrypt(message)
@@ -262,6 +247,7 @@ def decrypted_V3(message):
     return message_v3
 #-------------------------------------------------------#
 
+
 #======================================================#
 message = '{}'.format(nickname)
 cod = encrypted(message, baza)
@@ -271,6 +257,8 @@ client.send(cod_v3)
 #======================================================#
 
 # Listening to Server and Sending Nickname
+
+
 def receive(pushed):
     while True:
         try:
@@ -279,9 +267,6 @@ def receive(pushed):
             try:
                 message_v3 = decrypted_V3(message)
                 try:
-                    message_v3 = message_v3.decode('utf-8')
-                    message_v2 = decrypted_v2(message_v3)
-                    message_v3 = decrypted_V3(message)
                     message_v3 = message_v3.decode('utf-8')
                     message_v2 = decrypted_v2(message_v3)
                     try:
@@ -310,6 +295,8 @@ def receive(pushed):
             pass
 
 # Sending Messages To Server
+
+
 def write():
     while True:
         messager = input(': ')

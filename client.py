@@ -250,7 +250,7 @@ def decrypted_V3(message):
 
 
 #======================================================#
-message = '{}::0'.format(nickname)
+message = '{}'.format(nickname)
 cod = encrypted(message, baza)
 cod_v2 = encrypted_V2(cod)
 cod_v3 = encrypted_V3(cod_v2)
@@ -275,27 +275,16 @@ def receive(pushed):
                     try:
                         message = decrypted(message_v2, baza)
                         nick = message.split(":")
-                        message = ''.join(nick[0]) + ': ' + ''.join(nick[1])
                         nicknameup = nickname.upper()
-                        if nick[2] == '0':
-                            if nick[0] == nicknameup:
-                                test = b''
-                            else:
-                                print(message)
-                                test = b''
-                                if pushed == 1:
-                                    push(message)
-                                else:
-                                    pass
+                        if nick[0] == nicknameup:
+                            test = b''
                         else:
-                            if nick[0] == nicknameup:
-                                test = b''
+                            print(message)
+                            test = b''
+                            if pushed == 1:
+                                push(message)
                             else:
-                                file_b = nick[1]
-                                ras = nick[2].lower()
-
-                                file = open(f'file{ras}', 'wb')
-                                file.write(file_b)
+                                pass
                     except:
                         print(message_v2)
                         test = b''
@@ -321,14 +310,7 @@ def receive(pushed):
 def write():
     while True:
         messager = input(': ')
-        if messager == 'f':
-            f = str(input('directory: '))
-            filename, file_extension = os.path.splitext(f)
-            file = open(f, 'rb')
-            file = file.read(2048)
-            message = '{}: {}:{}'.format(nickname, file, file_extension)
-        else:
-            message = '{}: {}:0'.format(nickname, messager)
+        message = '{}: {}'.format(nickname, messager)
         cod = encrypted(message, baza)
         cod_v2 = encrypted_V2(cod)
         cod_v3 = encrypted_V3(cod_v2)

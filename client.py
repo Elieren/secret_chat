@@ -260,12 +260,14 @@ client.send(cod_v3)
 
 
 def receive(pushed):
+    test = b''
     while True:
         try:
             # Receive Message From Server
             message = client.recv(1024)
+            test += message
             try:
-                message_v3 = decrypted_V3(message)
+                message_v3 = decrypted_V3(test)
                 try:
                     message_v3 = message_v3.decode('utf-8')
                     message_v2 = decrypted_v2(message_v3)
@@ -274,23 +276,30 @@ def receive(pushed):
                         nick = message.split(":")
                         nicknameup = nickname.upper()
                         if nick[0] == nicknameup:
-                            pass
+                            test = b''
                         else:
                             print(message)
+                            test = b''
                             if pushed == 1:
                                 push(message)
                             else:
                                 pass
                     except:
                         print(message_v2)
+                        test = b''
                         if pushed == 1:
                             push(message)
                         else:
                             pass
                 except:
                     print('🔴 ALARM 🔴')
+                    test = b''
             except:
-                print(message)
+                if (message == b'^ Connect ^') or (message == b'^ left! ^'):
+                    print(message.decode('utf-8'))
+                    test = b''
+                else:
+                    pass
         except:
             pass
 

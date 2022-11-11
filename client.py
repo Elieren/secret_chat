@@ -16,7 +16,6 @@ client.connect((ip_server, 9090))
 
 key = str(input('key: '))
 shift = int(input('transitions: '))
-print(r"Type 'f' to send a file")
 chat = key
 
 plat = platform.processor()

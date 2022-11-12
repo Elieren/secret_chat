@@ -16,7 +16,6 @@ client.connect((ip_server, 9090))
 
 key = str(input('key: '))
 shift = int(input('transitions: '))
-chat = key
 
 plat = platform.processor()
 
@@ -224,11 +223,11 @@ def decrypted_v2(message_v3):
 
 def encrypted_V3(cod_v2):
     message = cod_v2.encode('utf-8')
-    cod_v3 = Fernet(chat).encrypt(message)
+    cod_v3 = Fernet(key).encrypt(message)
     return cod_v3
 
 def decrypted_V3(message):
-    message_v3 = Fernet(chat).decrypt(message)
+    message_v3 = Fernet(key).decrypt(message)
     return message_v3
 
 #======================================================#

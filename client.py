@@ -56,9 +56,8 @@ def push(message):
         os.system(command)
     elif plt == "Windows":
         win10toast.ToastNotifier().show_toast(title, message, duration=4)
-        return
     else:
-        return
+        pass
 
 #------------------------------------------------------------#
 rus = ["А", "Б", "В", "Г", "Д", "Е", "Ё", "Ж", "З",

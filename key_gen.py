@@ -10,7 +10,7 @@ a = 1
 g = list()
 length = 5
 
-while a < 101:
+while a < 102:
 	    letters_and_digits = string.ascii_letters + string.digits
 	    rand_string = ''.join(random.sample(letters_and_digits, length))
 	    g.append(rand_string)

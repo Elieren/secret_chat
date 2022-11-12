@@ -73,6 +73,13 @@ probel = [" "]
 znaki = [",", ".", "!", "?", '"', "@", "№",
          "#", "$", ";", "%", "^", ":", "&", "*", "(", ")", "-", "_", "+", "=", "{", "}", "[", "]", "'", ">", "<", "/", "\\", "|", "~", "`"]
 
+a = [rus, eng]
+for i in a:
+    f = list()
+    for x in i:
+        f.append(x.lower())
+    i.extend(f)
+
 over = rus + eng + numbers + probel + znaki
 #------------------------------------------------------------#
 #CRYPT_V1
@@ -81,7 +88,7 @@ baza = fornet(key)
 def encrypted(massager, baza):
     global over
 
-    text2 = list(massager.upper())
+    text2 = list(massager)
 
     cod = ""
 
@@ -99,8 +106,8 @@ def encrypted(massager, baza):
     cod = cod + "|"
 
     for x in low:
-        nom = 59
-        for n in over[59:69]:
+        nom = 118
+        for n in over[118:128]:
             if x in n:
                 cod = cod + f"{baza[nom]}"
             else:
@@ -250,11 +257,11 @@ def receive(pushed):
                     try:
                         message = decrypted(message_v2, baza)
                         nick = message.split(":")
-                        nicknameup = nickname.upper()
+                        nicknameup = nickname
                         if nick[0] == nicknameup:
                             test = b''
                         else:
-                            print(message.lower())
+                            print(message)
                             test = b''
                             if pushed == 1:
                                 push(message)

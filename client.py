@@ -88,9 +88,7 @@ baza = fornet(key)
 def encrypted(massager, baza):
     global over
 
-    text = massager
-
-    text = text.upper()
+    text = massager.upper()
 
     text2 = list(text)
 
@@ -132,11 +130,8 @@ def decrypted(message, baza):
     c = 0
     cod = ""
     cop = ''
-
-    text = message
-
-    my_st = text
-    key = my_st.split("|")
+    
+    key = message.split("|")
 
     lop = len(key[0])
     lor = (key[0])

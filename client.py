@@ -34,7 +34,6 @@ print('\n')
 
 #------------------------------------------------------------#
 
-
 def fornet(key):
     from key import KEY
     baza = KEY
@@ -43,9 +42,7 @@ def fornet(key):
     baza = em.split(" ")
     return baza
 
-
 def push(message):
-    message = message
     title = "New message"
     plt = platform.system()
     if plt == "Darwin":
@@ -63,7 +60,6 @@ def push(message):
         return
     else:
         return
-
 
 #------------------------------------------------------------#
 rus = ["А", "Б", "В", "Г", "Д", "Е", "Ё", "Ж", "З",
@@ -83,7 +79,6 @@ over = rus + eng + numbers + probel + znaki
 #------------------------------------------------------------#
 #CRYPT_V1
 baza = fornet(key)
-
 
 def encrypted(massager, baza):
     global over
@@ -119,7 +114,6 @@ def encrypted(massager, baza):
     text2.clear()
     return cod
 
-
 def decrypted(message, baza):
 
     global over
@@ -130,7 +124,7 @@ def decrypted(message, baza):
     c = 0
     cod = ""
     cop = ''
-    
+
     key = message.split("|")
 
     lop = len(key[0])
@@ -169,7 +163,6 @@ def decrypted(message, baza):
 #-----------------------------------------------------#
 #CRYPT_V2
 
-
 def encrypted_V2(cod):
     a = []
     b = []
@@ -191,7 +184,6 @@ def encrypted_V2(cod):
     b = b[shift:] + b[:shift]
     b = ("".join(b))
     return b
-
 
 def decrypted_v2(message_v3):
     e = 0
@@ -230,18 +222,14 @@ def decrypted_v2(message_v3):
 #---------------------------------------------------#
 #CRYPT_V3
 
-
 def encrypted_V3(cod_v2):
     message = cod_v2.encode('utf-8')
     cod_v3 = Fernet(chat).encrypt(message)
     return cod_v3
 
-
 def decrypted_V3(message):
     message_v3 = Fernet(chat).decrypt(message)
     return message_v3
-#-------------------------------------------------------#
-
 
 #======================================================#
 message = '{}'.format(nickname)
@@ -250,9 +238,6 @@ cod_v2 = encrypted_V2(cod)
 cod_v3 = encrypted_V3(cod_v2)
 client.send(cod_v3)
 #======================================================#
-
-# Listening to Server and Sending Nickname
-
 
 def receive(pushed):
     test = b''
@@ -298,9 +283,6 @@ def receive(pushed):
         except:
             pass
 
-# Sending Messages To Server
-
-
 def write():
     while True:
         messager = input(': ')
@@ -309,7 +291,6 @@ def write():
         cod_v2 = encrypted_V2(cod)
         cod_v3 = encrypted_V3(cod_v2)
         client.send(cod_v3)
-
 
 # Starting Threads For Listening And Writing
 receive_thread = threading.Thread(target=receive, args=(pushed,))

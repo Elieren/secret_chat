@@ -257,7 +257,7 @@ def receive(pushed):
                         if nick[0] == nicknameup:
                             test = b''
                         else:
-                            print(message)
+                            print(message.lower())
                             test = b''
                             if pushed == 1:
                                 push(message)

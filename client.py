@@ -81,9 +81,7 @@ baza = fornet(key)
 def encrypted(massager, baza):
     global over
 
-    text = massager.upper()
-
-    text2 = list(text)
+    text2 = list(massager.upper())
 
     cod = ""
 

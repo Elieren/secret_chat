@@ -15,7 +15,12 @@ client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 client.connect((ip_server, 9090))
 
 key = str(input('key: '))
-shift = int(input('transitions: '))
+shif = str(input('transitions: '))
+shift = list()
+for x in shif:
+    x = int(x)
+    shift.append(x)
+
 
 plat = platform.processor()
 
@@ -184,7 +189,9 @@ def encrypted_V2(cod):
             d += 1
         except:
             continue
-    b = b[shift:] + b[:shift]
+    b = b[shift[0]:] + b[:shift[0]]
+    b = b[-shift[1]:] + b[:-shift[1]]
+    b = b[shift[2]:] + b[:shift[2]]
     b = ("".join(b))
     return b
 
@@ -196,7 +203,9 @@ def decrypted_v2(message_v3):
     global shift
     for x in message_v3:
         b.append(x)
-    b = b[-shift:] + b[:-shift]
+    b = b[-shift[2]:] + b[:-shift[2]]
+    b = b[shift[1]:] + b[:shift[1]]
+    b = b[-shift[0]:] + b[:-shift[0]]
     l = len(b)
     while e < l:
         try:

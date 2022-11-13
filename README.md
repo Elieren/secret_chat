@@ -19,7 +19,6 @@ python3 client.py
 ```
 
 Enter any three-digit number in the "transitions" field.
-In the 'transitions' field, enter any number.
 
 ## __!__
 __This must be repeated for all users.__

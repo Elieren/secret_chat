@@ -18,7 +18,7 @@ Put the key file in the same directory as the client file.
 python3 client.py
 ```
 
-In the 'transitions' field, enter any number from 1-10.
+In the 'transitions' field, enter any number.
 
 ## __!__
 __This must be repeated for all users.__

@@ -33,7 +33,7 @@ def handle(client):
             client.close()
             nickname = nicknames[index]
             broadcast('{}'.format(nickname).encode('utf-8'))
-            broadcast('^ left! ^'.encode('utf-8'))
+            broadcast('^ leave! ^'.encode('utf-8'))
             nicknames.remove(nickname)
             print("Disconnect is {}".format(nickname))
             break

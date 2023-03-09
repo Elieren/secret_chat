@@ -1,9 +1,6 @@
-from pytube import YouTube
 import os
 import customtkinter
 import tkinter
-from tkinter import filedialog
-from tkinter import StringVar
 import threading
 import time
 import socket

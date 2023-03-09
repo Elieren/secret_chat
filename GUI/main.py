@@ -323,7 +323,7 @@ def receive():
                         textbox.insert(tkinter.END, f'{message}\n')
                         test = b''
                 except:
-                    textbox.insert(tkinter.END, '🔴 ALARM 🔴')
+                    textbox.insert(tkinter.END, '🔴 ALARM 🔴\n')
                     test = b''
             except:
                 if (message == b'^ Connect ^') or (message == b'^ left! ^'):

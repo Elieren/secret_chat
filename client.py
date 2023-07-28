@@ -2,6 +2,7 @@ import socket
 import threading
 from cryptography.fernet import Fernet
 import platform
+import pickle
 # import os
 # import win10toast
 
@@ -76,8 +77,9 @@ class Client():
                 self.__pushed = 0
 
     def __fornet(self):
-        from key import KEY
-        code = Fernet(self.__key).decrypt(KEY)
+        with open('file.key', 'rb') as file:
+            key = pickle.load(file)
+        code = Fernet(self.__key).decrypt(key)
         self.__baza = code.decode('utf-8').split(' ')
 
     def __push(self):

@@ -1,6 +1,7 @@
 import random
 import string
 from cryptography.fernet import Fernet
+import pickle
 
 key = Fernet.generate_key()
 
@@ -21,16 +22,12 @@ key_encripted = Fernet(key).encrypt(key_byte)
 
 key_encripted = key_encripted.decode('utf-8')
 
-f = open('key.py', 'w')
-f.write("KEY = b'")
-f.write(key_encripted)
-f.write("'")
-f.close()
+with open('file.key', 'wb') as file:
+    pickle.dump(key_encripted, file)
 
-from key import KEY
-baza = KEY
+with open('file.key', 'rb') as file:
+    baza = pickle.load(file)
 
 key_decripted = Fernet(key).decrypt(baza)
-key_decripted = key_decripted.decode('utf-8')
-key = key_decripted.split(" ")
-print('\n', key)
+key_decripted = key_decripted.decode('utf-8').split(' ')
+print('\n', key_decripted)

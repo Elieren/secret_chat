@@ -2,9 +2,9 @@ import socket
 import threading
 from cryptography.fernet import Fernet
 import platform
+import os
+from win10toast import ToastNotifier
 import pickle
-# import os
-# import win10toast
 
 
 class Client():
@@ -83,8 +83,7 @@ class Client():
         self.__baza = code.decode('utf-8').split(' ')
 
     def __push(self):
-        pass
-        """title = "New message"
+        title = "New message"
         plt = platform.system()
         if plt == "Darwin":
             command = f'''
@@ -98,10 +97,11 @@ with title "{title}"'
             '''
             os.system(command)
         elif plt == "Windows":
-            win10toast.ToastNotifier().show_toast(
-                title, self.__message_received, duration=4)
+            toaster = ToastNotifier()
+            toaster.show_toast(title, self.__message_received,
+                               threaded=False, icon_path=None, duration=60)
         else:
-            pass"""
+            pass
 
     def __encode_level_1(self):
         message = list(self.__message_sending)
@@ -257,18 +257,18 @@ with title "{title}"'
                                 self.__message_received = b''
                             else:
                                 print(self.__message_received)
-                                self.__message_received = b''
                                 if self.__pushed == 1:
                                     self.__push()
                                 else:
                                     pass
+                                self.__message_received = b''
                         except Exception:
                             print(self.__message_received)
-                            self.__message_received = b''
                             if self.__pushed == 1:
                                 self.__push()
                             else:
                                 pass
+                            self.__message_received = b''
                     except Exception:
                         print('🔴 ALARM 🔴')
                         self.__message_received = b''

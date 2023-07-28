@@ -2,311 +2,299 @@ import socket
 import threading
 from cryptography.fernet import Fernet
 import platform
-import os
-import win10toast
-
-# Choosing Nickname
-nickname = input("Choose your nickname: ")
-
-ip_server = str(input('ip_server: '))
-
-# Connecting To Server
-client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-client.connect((ip_server, 9090))
-
-key = str(input('key: '))
-shif = str(input('transitions: '))
-shift = list()
-for x in shif:
-    x = int(x)
-    shift.append(x)
+# import os
+# import win10toast
 
 
-plat = platform.processor()
+class Client():
 
-if plat == '':
-    pushed = 0
-else:
-    lord = input('Push (Y/N): ')
-    lord = lord.upper()
-    if lord == 'Y':
-        pushed = 1
-    elif lord == 'N':
-        pushed = 0
+    def __init__(self):
+        rus = ["А", "Б", "В", "Г", "Д", "Е", "Ё", "Ж", "З",
+               "И", "Й", "К", "Л", "М", "Н", "О", "П", "Р",
+               "С", "Т", "У", "Ф", "Х", "Ц", "Ч", "Ш", "Щ",
+               "Ъ", "Ы", "Ь", "Э", "Ю", "Я"]
 
-print('\n')
+        eng = ["A", "B", "C", "D", "E", "F", "G",
+               "H", "I", "J", "K", "L", "M", "N",
+               "O", "P", "Q", "R", "S", "T", "U",
+               "V", "W", "X", "Y", "Z"]
 
-#------------------------------------------------------------#
+        numbers = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"]
 
-def fornet(key):
-    from key import KEY
-    baza = KEY
-    em = Fernet(key).decrypt(baza)
-    em = em.decode('utf-8')
-    baza = em.split(" ")
-    return baza
+        probel = [" "]
 
-def push(message):
-    title = "New message"
-    plt = platform.system()
-    if plt == "Darwin":
-        command = f'''
-        osascript -e 'display notification "{message}" with title "{title}"'
-        '''
-        os.system(command)
-    elif plt == "Linux":
-        command = f'''
-        notify-send "{title}" "{message}"
-        '''
-        os.system(command)
-    elif plt == "Windows":
-        win10toast.ToastNotifier().show_toast(title, message, duration=4)
-    else:
+        znaki = [",", ".", "!", "?", '"', "@", "№",
+                 "#", "$", ";", "%", "^", ":", "&",
+                 "*", "(", ")", "-", "_", "+", "=",
+                 "{", "}", "[", "]", "'", ">", "<",
+                 "/", "\\", "|", "~", "`"]
+
+        for i in [rus, eng]:
+            temporary = []
+            for x in i:
+                temporary.append(x.lower())
+            i.extend(temporary)
+
+        self.__full = rus + eng + numbers + probel + znaki
+
+        self.__nickname = input("Choose your nickname: ")
+        self.__ip_server = str(input('ip_server: '))
+
+        self.__client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.__client.connect((self.__ip_server, 9090))
+
+        self.__key_load()
+        self.__selection()
+        self.__fornet()
+
+        self.__start()
+
+        # Starting Threads For Listening And Writing
+        receive_thread = threading.Thread(target=self.__get_message)
+        receive_thread.start()
+
+        write_thread = threading.Thread(target=self.__write)
+        write_thread.start()
+
+    def __key_load(self):
+        self.__key = str(input('key: '))
+        self.__transitions = str(input('transitions: '))
+        self.__transitions_array = []
+        for x in self.__transitions:
+            self.__transitions_array.append(int(x))
+
+    def __selection(self):
+        self.__plat = platform.processor()
+
+        if self.__plat == '':
+            self.__pushed = 0
+        else:
+            x = input('Push (Y/N): ').upper()
+            if x == 'Y':
+                self.__pushed = 1
+            elif x == 'N':
+                self.__pushed = 0
+
+    def __fornet(self):
+        from key import KEY
+        code = Fernet(self.__key).decrypt(KEY)
+        self.__baza = code.decode('utf-8').split(' ')
+
+    def __push(self):
         pass
+        """title = "New message"
+        plt = platform.system()
+        if plt == "Darwin":
+            command = f'''
+            osascript -e 'display notification "{self.__ms}" \
+with title "{title}"'
+            '''
+            os.system(command)
+        elif plt == "Linux":
+            command = f'''
+            notify-send "{title}" "{self.__ms}"
+            '''
+            os.system(command)
+        elif plt == "Windows":
+            win10toast.ToastNotifier().show_toast(title, self.__ms,
+                                                  duration=4)
+        else:
+            pass"""
 
-#------------------------------------------------------------#
-rus = ["А", "Б", "В", "Г", "Д", "Е", "Ё", "Ж", "З",
-       "И", "Й", "К", "Л", "М", "Н", "О", "П", "Р", "С", "Т", "У", "Ф", "Х", "Ц", "Ч", "Ш", "Щ", "Ъ", "Ы", "Ь", "Э", "Ю", "Я"]
+    def __encode_level_1(self):
+        message = list(self.__mw)
 
-eng = ["A", "B", "C", "D", "E", "F", "G",
-       "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
+        encode_text = ''
 
-numbers = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"]
-
-probel = [" "]
-
-znaki = [",", ".", "!", "?", '"', "@", "№",
-         "#", "$", ";", "%", "^", ":", "&", "*", "(", ")", "-", "_", "+", "=", "{", "}", "[", "]", "'", ">", "<", "/", "\\", "|", "~", "`"]
-
-a = [rus, eng]
-for i in a:
-    f = list()
-    for x in i:
-        f.append(x.lower())
-    i.extend(f)
-
-over = rus + eng + numbers + probel + znaki
-#------------------------------------------------------------#
-#CRYPT_V1
-baza = fornet(key)
-
-def encrypted(massager, baza):
-    global over
-
-    text2 = list(massager)
-
-    cod = ""
-
-    for x in text2:
-        nom = 0
-        for r in over:
-            if x in r:
-                cod = cod + f"{baza[nom]}"
-            else:
-                pass
-            nom += 1
-
-    low = len(cod)
-    low = str(low)
-    cod = cod + "|"
-
-    for x in low:
-        nom = 118
-        for n in over[118:128]:
-            if x in n:
-                cod = cod + f"{baza[nom]}"
-            else:
-                pass
-            nom += 1
-
-    text2.clear()
-    return cod
-
-def decrypted(message, baza):
-
-    global over
-
-    text2 = list()
-    ty = ""
-    text = ""
-    c = 0
-    cod = ""
-    cop = ''
-
-    key = message.split("|")
-
-    lop = len(key[0])
-    lor = (key[0])
-
-    lof = (key[1])
-    n = 5
-    text5 = [lof[i:i+n] for i in range(0, len(lof), n)]
-
-    for x in text5:
-        nom = 0
-        for b in baza:
-            if b in x:
-                cop = cop + f"{over[nom]}"
-            else:
-                pass
-            nom += 1
-    lop = str(lop)
-
-    if lop == cop:
-        n = 5
-        text2 = [lor[i:i+n] for i in range(0, len(lor), n)]
-
-        for x in text2:
-            nom = 0
-            for b in baza:
-                if b in x:
-                    cod = cod + f"{over[nom]}"
+        for i in message:
+            for x, z in enumerate(self.__full):
+                if i in z:
+                    encode_text += f"{self.__baza[x]}"
                 else:
                     pass
-                nom += 1
-    else:
-        cod = '🔴 ALARM 🔴'
-    message = cod
-    return message
-#-----------------------------------------------------#
-#CRYPT_V2
 
-def encrypted_V2(cod):
-    a = []
-    b = []
-    d = 0
-    global shift
-    for x in cod:
-        a.append(x)
-    l = len(a)
-    while d < l:
-        b.append(a[0])
-        del a[0]
-        d += 1
-        try:
-            b.append(a[-1])
-            del a[-1]
-            d += 1
-        except:
-            continue
-    b = b[shift[0]:] + b[:shift[0]]
-    b = b[-shift[1]:] + b[:-shift[1]]
-    b = b[shift[2]:] + b[:shift[2]]
-    b = ("".join(b))
-    return b
+        text_len = str(len(encode_text))
+        encode_text += '|'
 
-def decrypted_v2(message_v3):
-    e = 0
-    g = 0
-    b = []
-    c = []
-    global shift
-    for x in message_v3:
-        b.append(x)
-    b = b[-shift[2]:] + b[:-shift[2]]
-    b = b[shift[1]:] + b[:shift[1]]
-    b = b[-shift[0]:] + b[:-shift[0]]
-    l = len(b)
-    while e < l:
-        try:
-            c.append(b[g])
-            g += 2
-            e += 1
-        except:
-            e += 1
-            continue
-    e = 0
-    if (l % 2) != 0:
-        g = 2
-    else:
-        g = 1
-    while e < l:
-        try:
-            c.append(b[-g])
-            g += 2
-            e += 1
-        except:
-            e += 1
-            continue
-    c = ("".join(c))
-    return c
+        for i in text_len:
+            x = 118
+            for n in self.__full[118:128]:
+                if i in n:
+                    encode_text += f'{self.__baza[x]}'
+                else:
+                    pass
+                x += 1
 
-#---------------------------------------------------#
-#CRYPT_V3
+        self.__mw = encode_text
 
-def encrypted_V3(cod_v2):
-    message = cod_v2.encode('utf-8')
-    cod_v3 = Fernet(key).encrypt(message)
-    return cod_v3
+    def __decode_level_1(self):
+        text = str(self.__ms).split('|')
+        length_key = 5
+        code_text = text[0]
+        len_text = str(len(text[0]))
+        key = text[1]
 
-def decrypted_V3(message):
-    message_v3 = Fernet(key).decrypt(message)
-    return message_v3
+        decode_len = ''
+        decode_text = ''
 
-#======================================================#
-message = '{}'.format(nickname)
-cod = encrypted(message, baza)
-cod_v2 = encrypted_V2(cod)
-cod_v3 = encrypted_V3(cod_v2)
-client.send(cod_v3)
-#======================================================#
+        decode_key = [key[i:i + length_key]
+                      for i in range(0, len(key),
+                      length_key)]
 
-def receive(pushed):
-    test = b''
-    while True:
-        try:
-            # Receive Message From Server
-            message = client.recv(1024)
-            test += message
+        for i in decode_key:
+            for x, b in enumerate(self.__baza):
+                if b in i:
+                    decode_len += f"{self.__full[x]}"
+                else:
+                    pass
+
+        if len_text == decode_len:
+            decode_text_key = [
+                code_text[i:i + length_key]
+                for i in range(0, len(code_text),
+                               length_key)]
+
+            for i in decode_text_key:
+                for x, b in enumerate(self.__baza):
+                    if b in i:
+                        decode_text += f"{self.__full[x]}"
+                    else:
+                        pass
+
+            self.__ms = decode_text
+        else:
+            self.__ms = "Error. The key doesn't fit."
+
+    def __encode_level_2(self):
+        char_text = []
+        encode_text = []
+        i = 0
+        t_a = self.__transitions_array
+        for x in self.__mw:
+            char_text.append(x)
+        len_text = len(char_text)
+        while i < len_text:
+            encode_text.append(char_text[0])
+            del char_text[0]
+            i += 1
             try:
-                message_v3 = decrypted_V3(test)
+                encode_text.append(char_text[-1])
+                del char_text[-1]
+                i += 1
+            except Exception:
+                continue
+
+        encode_text = encode_text[t_a[0]:] + encode_text[:t_a[0]]
+        encode_text = encode_text[-t_a[1]:] + encode_text[:-t_a[1]]
+        encode_text = encode_text[t_a[2]:] + encode_text[:t_a[2]]
+        self.__mw = ("".join(encode_text))
+
+    def __decode_level_2(self):
+        i = 0
+        x = 0
+        char_text = []
+        decode_text = []
+        t_a = self.__transitions_array
+        for x in self.__ms:
+            char_text.append(x)
+
+        char_text = char_text[-t_a[2]:] + char_text[:-t_a[2]]
+        char_text = char_text[t_a[1]:] + char_text[:t_a[1]]
+        char_text = char_text[-t_a[0]:] + char_text[:-t_a[0]]
+
+        len_text = len(char_text)
+        x = 0
+        while i < len_text:
+            try:
+                decode_text.append(char_text[x])
+                x += 2
+                i += 1
+            except Exception:
+                i += 1
+                continue
+        i = 0
+        if (len_text % 2) != 0:
+            x = 2
+        else:
+            x = 1
+        while i < len_text:
+            try:
+                decode_text.append(char_text[-x])
+                x += 2
+                i += 1
+            except Exception:
+                i += 1
+                continue
+        self.__ms = ("".join(decode_text))
+
+    def __encode_level_3(self):
+        message = self.__mw.encode('utf-8')
+        self.__mw = Fernet(self.__key).encrypt(message)
+
+    def __decode_level_3(self):
+        self.__ms = Fernet(self.__key).decrypt(self.__ms)
+
+    def __get_message(self):
+        self.__ms = b''
+        while True:
+            try:
+                # Receive Message From Server
+                self.__ms += self.__client.recv(1024)
                 try:
-                    message_v3 = message_v3.decode('utf-8')
-                    message_v2 = decrypted_v2(message_v3)
+                    self.__decode_level_3()
                     try:
-                        message = decrypted(message_v2, baza)
-                        nick = message.split(":")
-                        nicknameup = nickname
-                        if nick[0] == nicknameup:
-                            test = b''
-                        else:
-                            print(message)
-                            test = b''
-                            if pushed == 1:
-                                push(message)
+                        self.__ms = self.__ms.decode('utf-8')
+                        self.__decode_level_2()
+                        try:
+                            self.__decode_level_1()
+                            nick = self.__ms.split(":")
+                            nicknameup = self.__nickname
+                            if nick[0] == nicknameup:
+                                self.__ms = b''
+                            else:
+                                print(self.__ms)
+                                self.__ms = b''
+                                if self.__pushed == 1:
+                                    self.__push()
+                                else:
+                                    pass
+                        except Exception:
+                            print(self.__ms)
+                            self.__ms = b''
+                            if self.__pushed == 1:
+                                self.__push()
                             else:
                                 pass
-                    except:
-                        print(message_v2)
-                        test = b''
-                        if pushed == 1:
-                            push(message)
-                        else:
-                            pass
-                except:
-                    print('🔴 ALARM 🔴')
-                    test = b''
-            except:
-                if (message == b'^ Connect ^') or (message == b'^ left! ^'):
-                    print(message.decode('utf-8'))
-                    test = b''
-                else:
-                    pass
-        except:
-            pass
+                    except Exception:
+                        print('🔴 ALARM 🔴')
+                        self.__ms = b''
+                except Exception:
+                    if (self.__ms == b'^ Connect ^') or (
+                            self.__ms == b'^ leave! ^'):
+                        print(self.__ms.decode('utf-8'))
+                        # self.__ms = b''
+                    else:
+                        pass
+                    self.__ms = b''
+            except Exception:
+                pass
 
-def write():
-    while True:
-        messager = input(': ')
-        message = '{}: {}'.format(nickname, messager)
-        cod = encrypted(message, baza)
-        cod_v2 = encrypted_V2(cod)
-        cod_v3 = encrypted_V3(cod_v2)
-        client.send(cod_v3)
+    def __write(self):
+        while True:
+            message = input(': ')
+            self.__mw = '{}: {}'.format(self.__nickname, message)
+            self.__encode_level_1()
+            self.__encode_level_2()
+            self.__encode_level_3()
+            self.__client.send(self.__mw)
 
-# Starting Threads For Listening And Writing
-receive_thread = threading.Thread(target=receive, args=(pushed,))
-receive_thread.start()
+    def __start(self):
+        self.__mw = '{}'.format(self.__nickname)
+        self.__encode_level_1()
+        self.__encode_level_2()
+        self.__encode_level_3()
+        self.__client.send(self.__mw)
 
-write_thread = threading.Thread(target=write)
-write_thread.start()
+
+if __name__ == '__main__':
+    Client()

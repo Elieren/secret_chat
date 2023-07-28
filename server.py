@@ -14,10 +14,12 @@ server.listen()
 clients = []
 nicknames = []
 
+
 # Sending Messages To All Connected Clients
 def broadcast(message):
     for client in clients:
         client.send(message)
+
 
 # Handling Messages From Clients
 def handle(client):
@@ -26,7 +28,7 @@ def handle(client):
             # Broadcasting Messages
             message = client.recv(1024)
             broadcast(message)
-        except:
+        except Exception:
             # Removing And Closing Clients
             index = clients.index(client)
             clients.remove(client)
@@ -38,6 +40,7 @@ def handle(client):
             print("Disconnect is {}".format(nickname))
             break
 
+
 # Receiving / Listening Function
 def receive():
     while True:
@@ -46,7 +49,7 @@ def receive():
         print("Connected with {}".format(str(address)))
 
         # Request And Store Nickname
-        #client.send('NICK'.encode('utf-8'))
+        # client.send('NICK'.encode('utf-8'))
         nickname = client.recv(1024).decode('utf-8')
         nicknames.append(nickname)
         clients.append(client)
@@ -60,5 +63,6 @@ def receive():
         # Start Handling Thread For Client
         thread = threading.Thread(target=handle, args=(client,))
         thread.start()
-        
+
+
 receive()

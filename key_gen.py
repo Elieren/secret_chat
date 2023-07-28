@@ -6,34 +6,31 @@ key = Fernet.generate_key()
 
 print('Key: ', key.decode('utf-8'))
 
-a = 1
-g = list()
+key_arr = []
 length = 5
 
-while a < 163:
-	    letters_and_digits = string.ascii_letters + string.digits
-	    rand_string = ''.join(random.sample(letters_and_digits, length))
-	    g.append(rand_string)
-	    a += 1
+for i in range(163):
+    letters_and_digits = string.ascii_letters + string.digits
+    rand_string = ''.join(random.sample(letters_and_digits, length))
+    key_arr.append(rand_string)
 
-g = ' '.join(g)
+key_str = ' '.join(key_arr)
 
-m = g.encode('utf-8')
-en = Fernet(key).encrypt(m)
+key_byte = key_str.encode('utf-8')
+key_encripted = Fernet(key).encrypt(key_byte)
 
-en = en.decode('utf-8')
+key_encripted = key_encripted.decode('utf-8')
 
 f = open('key.py', 'w')
 f.write("KEY = b'")
-f.write(en)
+f.write(key_encripted)
 f.write("'")
 f.close()
 
 from key import KEY
 baza = KEY
 
-#en = baza.decode('utf-8')
-em = Fernet(key).decrypt(baza)
-em = em.decode('utf-8')
-lokey = em.split(" ")
-print('\n',lokey)
+key_decripted = Fernet(key).decrypt(baza)
+key_decripted = key_decripted.decode('utf-8')
+key = key_decripted.split(" ")
+print('\n', key)

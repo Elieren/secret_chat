@@ -1,3 +1,6 @@
-cryptography
-threaded
-win10toast
+cffi==1.15.1
+cryptography==41.0.2
+pycparser==2.21
+pypiwin32==223
+pywin32==306
+win10toast==0.9

@@ -86,23 +86,23 @@ class Client():
         plt = platform.system()
         if plt == "Darwin":
             command = f'''
-            osascript -e 'display notification "{self.__ms}" \
+            osascript -e 'display notification "{self.__message_received}" \
 with title "{title}"'
             '''
             os.system(command)
         elif plt == "Linux":
             command = f'''
-            notify-send "{title}" "{self.__ms}"
+            notify-send "{title}" "{self.__message_received}"
             '''
             os.system(command)
         elif plt == "Windows":
-            win10toast.ToastNotifier().show_toast(title, self.__ms,
-                                                  duration=4)
+            win10toast.ToastNotifier().show_toast(
+                title, self.__message_received, duration=4)
         else:
             pass"""
 
     def __encode_level_1(self):
-        message = list(self.__mw)
+        message = list(self.__message_sending)
 
         encode_text = ''
 
@@ -125,10 +125,10 @@ with title "{title}"'
                     pass
                 x += 1
 
-        self.__mw = encode_text
+        self.__message_sending = encode_text
 
     def __decode_level_1(self):
-        text = str(self.__ms).split('|')
+        text = str(self.__message_received).split('|')
         length_key = 5
         code_text = text[0]
         len_text = str(len(text[0]))
@@ -161,16 +161,16 @@ with title "{title}"'
                     else:
                         pass
 
-            self.__ms = decode_text
+            self.__message_received = decode_text
         else:
-            self.__ms = "Error. The key doesn't fit."
+            self.__message_received = "Error. The key doesn't fit."
 
     def __encode_level_2(self):
         char_text = []
         encode_text = []
         i = 0
         t_a = self.__transitions_array
-        for x in self.__mw:
+        for x in self.__message_sending:
             char_text.append(x)
         len_text = len(char_text)
         while i < len_text:
@@ -187,7 +187,7 @@ with title "{title}"'
         encode_text = encode_text[t_a[0]:] + encode_text[:t_a[0]]
         encode_text = encode_text[-t_a[1]:] + encode_text[:-t_a[1]]
         encode_text = encode_text[t_a[2]:] + encode_text[:t_a[2]]
-        self.__mw = ("".join(encode_text))
+        self.__message_sending = ("".join(encode_text))
 
     def __decode_level_2(self):
         i = 0
@@ -195,7 +195,7 @@ with title "{title}"'
         char_text = []
         decode_text = []
         t_a = self.__transitions_array
-        for x in self.__ms:
+        for x in self.__message_received:
             char_text.append(x)
 
         char_text = char_text[-t_a[2]:] + char_text[:-t_a[2]]
@@ -225,75 +225,77 @@ with title "{title}"'
             except Exception:
                 i += 1
                 continue
-        self.__ms = ("".join(decode_text))
+        self.__message_received = ("".join(decode_text))
 
     def __encode_level_3(self):
-        message = self.__mw.encode('utf-8')
-        self.__mw = Fernet(self.__key).encrypt(message)
+        message = self.__message_sending.encode('utf-8')
+        self.__message_sending = Fernet(self.__key).encrypt(message)
 
     def __decode_level_3(self):
-        self.__ms = Fernet(self.__key).decrypt(self.__ms)
+        self.__message_received = Fernet(self.__key) \
+            .decrypt(self.__message_received)
 
     def __get_message(self):
-        self.__ms = b''
+        self.__message_received = b''
         while True:
             try:
                 # Receive Message From Server
-                self.__ms += self.__client.recv(1024)
+                self.__message_received += self.__client.recv(1024)
                 try:
                     self.__decode_level_3()
                     try:
-                        self.__ms = self.__ms.decode('utf-8')
+                        self.__message_received = self.__message_received \
+                            .decode('utf-8')
                         self.__decode_level_2()
                         try:
                             self.__decode_level_1()
-                            nick = self.__ms.split(":")
+                            nick = self.__message_received.split(":")
                             nicknameup = self.__nickname
                             if nick[0] == nicknameup:
-                                self.__ms = b''
+                                self.__message_received = b''
                             else:
-                                print(self.__ms)
-                                self.__ms = b''
+                                print(self.__message_received)
+                                self.__message_received = b''
                                 if self.__pushed == 1:
                                     self.__push()
                                 else:
                                     pass
                         except Exception:
-                            print(self.__ms)
-                            self.__ms = b''
+                            print(self.__message_received)
+                            self.__message_received = b''
                             if self.__pushed == 1:
                                 self.__push()
                             else:
                                 pass
                     except Exception:
                         print('🔴 ALARM 🔴')
-                        self.__ms = b''
+                        self.__message_received = b''
                 except Exception:
-                    if (self.__ms == b'^ Connect ^') or (
-                            self.__ms == b'^ leave! ^'):
-                        print(self.__ms.decode('utf-8'))
-                        # self.__ms = b''
+                    if (self.__message_received == b'^ Connect ^') or (
+                            self.__message_received == b'^ leave! ^'):
+                        print(self.__message_received.decode('utf-8'))
+                        # self.__message_received = b''
                     else:
                         pass
-                    self.__ms = b''
+                    self.__message_received = b''
             except Exception:
                 pass
 
     def __write(self):
         while True:
             message = input(': ')
-            self.__mw = '{}: {}'.format(self.__nickname, message)
+            self.__message_sending = '{}: {}'.format(self.__nickname, message)
             self.__encode_level_1()
             self.__encode_level_2()
             self.__encode_level_3()
-            self.__client.send(self.__mw)
+            self.__client.send(self.__message_sending)
 
     def __start(self):
-        self.__mw = '{}'.format(self.__nickname)
+        self.__message_sending = '{}'.format(self.__nickname)
         self.__encode_level_1()
         self.__encode_level_2()
         self.__encode_level_3()
-        self.__client.send(self.__mw)
+        self.__client.send(self.__message_sending)
 
 
 if __name__ == '__main__':
